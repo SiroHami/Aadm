@@ -5,8 +5,8 @@ this code is from osmr's github
 https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/model_provider.py#L178
 
 """
-import lenet as LeNet
-import AlexNet as AlexNet
+import LeNet
+import AlexNet
 import ResNet
 
 __all__ = ['get_model', 'get_model_list']

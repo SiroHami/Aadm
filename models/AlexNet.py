@@ -5,6 +5,7 @@ Implementation of AlexNet, from paper
 url: https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
 """
 
+__all__ = ['AlexNet']
 
 import torch
 import torch.nn as nn

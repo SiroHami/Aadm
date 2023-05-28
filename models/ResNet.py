@@ -5,6 +5,8 @@ Implementation of ResNet, from paper
 url: https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html
 """
 
+__all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152']
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
