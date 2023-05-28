@@ -4,8 +4,12 @@ import os
 import shutil
 import time
 import random
+import sys
 
 import numpy as np
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "progress"))
+from progress.bar import Bar as Bar
 
 import torch
 import torch.nn as nn
@@ -20,7 +24,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 import models.ResNet as model
 import datasets.cifar10_dataset as dataset
-from utils import Bar, Logger, AverageMeter, accuracy, mkdir_p, savefig, fix_seed
+from utils import Logger, AverageMeter, Accuracy, mkdir_p, save_args, fix_seed
 
 parser = argparse.ArgumentParser(description='PyTorch MixMatch')
 #add options
@@ -331,7 +335,7 @@ def validate(valloader, model, criterion, epoch, use_cuda, mode):
             loss = criterion(outputs, targets)
 
             # measure accuracy and record loss
-            prec1, prec5 = accuracy(outputs, targets, topk=(1, 5))
+            prec1, prec5 = Accuracy(outputs, targets, topk=(1, 5))
             losses.update(loss.item(), inputs.size(0))
             top1.update(prec1.item(), inputs.size(0))
             top5.update(prec5.item(), inputs.size(0))
