@@ -5,6 +5,5 @@ data/
 result/
 
 #cache_
-datasets/__pycache__
-models/__pycache__
-utils/__pycache__
+__pycache__/
+
