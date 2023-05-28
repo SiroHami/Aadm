@@ -58,7 +58,7 @@ parser.add_argument('--lambda-u', default=75, type=float,
                     help='')
 parser.add_argument('--T', default=0.5, type=float,
                     help='')
-parser.add_argument('--eam-decay', default=0.999, type=float)
+parser.add_argument('--ema-decay', default=0.999, type=float)
 
 args = parser.parse_args()
 state = {k: v for k, v in args._get_kwargs()}
