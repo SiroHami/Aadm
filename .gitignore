@@ -1,2 +1,10 @@
-#for colab
-for_commit_from_colab_to_github.ipynb
+#data
+data/
+
+#result
+result/
+
+#cache_
+datasets/__pycache__
+models/__pycache__
+utils/__pycache__
