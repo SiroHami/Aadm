@@ -5,10 +5,14 @@
 """
 
 import os
+
+import numpy as np
+
 from torchvision.datasets import CIFAR10
 import torchvision.transforms as transforms
-from .dataset_metainfo import DatasetMetaInfo
 
+from .dataset_metainfo import DatasetMetaInfo, train_val_split
+from utils import transpose
 
 class CIFAR10Load(CIFAR10):
     """
@@ -62,13 +66,73 @@ class CIFAR10MetaInfo(DatasetMetaInfo):
     self.ml_type = "SiroHami, based on imgcls"
 
 
+class CIFAR10_labeled(CIFAR10):
+
+    def __init__(self, root, indexs=None, train=True,
+                 transform=None, target_transform=None,
+                 download=False):
+        super(CIFAR10_labeled, self).__init__(root, train=train,
+                 transform=transform, target_transform=target_transform,
+                 download=download)
+        if indexs is not None:
+            self.data = self.data[indexs]
+            self.targets = np.array(self.targets)[indexs]
+        self.data = transpose(transforms.normalize(self.data))
+
+    def __getitem__(self, index):
+        """
+        Args:
+            index (int): Index
+
+        Returns:
+            tuple: (image, target) where target is index of the target class.
+        """
+        img, target = self.data[index], self.targets[index]
+
+        if self.transform is not None:
+            img = self.transform(img)
+
+        if self.target_transform is not None:
+            target = self.target_transform(target)
+
+        return img, target
+    
+
+class CIFAR10_unlabeled(CIFAR10_labeled):
+
+    def __init__(self, root, indexs, train=True,
+                 transform=None, target_transform=None,
+                 download=False):
+        super(CIFAR10_unlabeled, self).__init__(root, indexs, train=train,
+                 transform=transform, target_transform=target_transform,
+                 download=download)
+        self.targets = np.array([-1 for i in range(len(self.targets))])
+
+
+
+def get_cifar10(root, n_labeled,
+                 transform_train=None, transform_val=None,
+                 download=True):
+
+    base_dataset = CIFAR10(root, train=True, download=download)
+    train_labeled_idxs, train_unlabeled_idxs, val_idxs = train_val_split(base_dataset.targets, int(n_labeled/10))
+
+    train_labeled_dataset = CIFAR10_labeled(root, train_labeled_idxs, train=True, transform=cifar10_labeled_train_transform())
+    train_unlabeled_dataset = CIFAR10_unlabeled(root, train_unlabeled_idxs, train=True, transform=cifar10_labeled_train_transform())
+    val_dataset = CIFAR10_labeled(root, val_idxs, train=True, transform=cifar10_val_transform(), download=True)
+    test_dataset = CIFAR10_labeled(root, train=False, transform=cifar10_val_transform(), download=True)
+
+    print (f"#Labeled: {len(train_labeled_idxs)} #Unlabeled: {len(train_unlabeled_idxs)} #Val: {len(val_idxs)}")
+    return train_labeled_dataset, train_unlabeled_dataset, val_dataset, test_dataset
+
 def cifar10_labeled_train_transform(ds_metainfo,
                             mean_rgb=(0.4914, 0.4822, 0.4465),
                             std_rgb=(0.2023, 0.1994, 0.2010),
                             jitter_param=0.4):
     assert (ds_metainfo is not None)
     assert (ds_metainfo.input_image_size[0] == 32)
-    return transforms.Compose([
+    
+    labeled_cifar10 = transforms.Compose([
         transforms.RandomCrop(
             size=32,
             padding=4),
@@ -82,6 +146,8 @@ def cifar10_labeled_train_transform(ds_metainfo,
             mean=mean_rgb,
             std=std_rgb)
     ])
+    return labeled_cifar10
+
 
 def cifar10_unlabeled_train_transform(ds_metainfo,
                             mean_rgb=(0.4914, 0.4822, 0.4465),
@@ -89,7 +155,7 @@ def cifar10_unlabeled_train_transform(ds_metainfo,
                             jitter_param=0.4):
     assert (ds_metainfo is not None)
     assert (ds_metainfo.input_image_size[0] == 32)
-    return transforms.Compose([
+    unlabeled_cifar10 = transforms.Compose([
         transforms.RandomCrop(
             size=32,
             padding=4),
@@ -103,15 +169,17 @@ def cifar10_unlabeled_train_transform(ds_metainfo,
             mean=mean_rgb,
             std=std_rgb)
     ])
+    return unlabeled_cifar10 
 
 
 def cifar10_val_transform(ds_metainfo,
                           mean_rgb=(0.4914, 0.4822, 0.4465),
                           std_rgb=(0.2023, 0.1994, 0.2010)):
     assert (ds_metainfo is not None)
-    return transforms.Compose([
+    val_cifar10 = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize(
             mean=mean_rgb,
             std=std_rgb)
     ])
+    return val_cifar10

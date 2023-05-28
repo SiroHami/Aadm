@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data.sampler import WeightedRandomSampler
 import torchvision.transforms as transforms
 import torchvision
-from .datasets.cifar10_dataset import CIFAR10MetaInfo
+from datasets.cifar10_dataset import CIFAR10MetaInfo
 
 
 

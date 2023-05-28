@@ -5,6 +5,7 @@
 """
 
 import os
+import numpy as np
 
 class DatasetMetaInfo(object):
     """
@@ -43,6 +44,34 @@ class DatasetMetaInfo(object):
         self.train_net_extra_kwargs = None
         self.test_net_extra_kwargs = None
         self.load_ignore_extra = False
+
+def train_val_split(labels, n_labeled_per_class):
+    labels = np.array(labels)
+    train_labeled_idxs = []
+    train_unlabeled_idxs = []
+    val_idxs = []
+
+    if n_labeled_per_class == 'full':
+        for i in range(10):
+            idxs = np.where(labels == i)[0]
+            np.random.shuffle(idxs)
+            train_unlabeled_idxs.extend(idxs[n_labeled_per_class:-500])
+            val_idxs.extend(idxs[-500:])
+        np.random.shuffle(train_labeled_idxs)
+        np.random.shuffle(val_idxs)
+        return train_labeled_idxs, val_idxs
+
+    else:
+        for i in range(10):
+            idxs = np.where(labels == i)[0]
+            np.random.shuffle(idxs)
+            train_labeled_idxs.extend(idxs[:n_labeled_per_class])
+            train_unlabeled_idxs.extend(idxs[n_labeled_per_class:-500])
+            val_idxs.extend(idxs[-500:])
+        np.random.shuffle(train_labeled_idxs)
+        np.random.shuffle(train_unlabeled_idxs)
+        np.random.shuffle(val_idxs)
+        return train_labeled_idxs, train_unlabeled_idxs, val_idxs
 
     def add_dataset_parser_arguments(self,
                                      parser,

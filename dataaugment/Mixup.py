@@ -1,31 +1,26 @@
-import torch
-import numpy as np
+"""
+@article{
+zhang2018mixup,
+title={mixup: Beyond Empirical Risk Minimization},
+author={Hongyi Zhang, Moustapha Cisse, Yann N. Dauphin, David Lopez-Paz},
+journal={International Conference on Learning Representations},
+year={2018},
+url={https://openreview.net/forum?id=r1Ddp1-Rb},
+}
+"""
 
-def mixup(images, bboxes, areas, alpha=1.0):
-    """
-    Randomly mixes the given list if images with each other
-    
-    :param images: The images to be mixed up
-    :param bboxes: The bounding boxes (labels)
-    :param areas: The list of area of all the bboxes
-    :param alpha: Required to generate image wieghts (lambda) using beta distribution. In this case we'll use alpha=1, which is same as uniform distribution
-    """
-    # Generate random indices to shuffle the images
-    indices = torch.randperm(len(images))
-    shuffled_images = images[indices]
-    shuffled_bboxes = bboxes[indices]
-    shuffled_areas = areas[indices]
-    
-    # Generate image weight (minimum 0.4 and maximum 0.6)
-    lam = np.clip(np.random.beta(alpha, alpha), 0.4, 0.6)
-    print(f'lambda: {lam}')
-    
-    # Weighted Mixup
-    mixedup_images = lam*images + (1 - lam)*shuffled_images
-    
-    mixedup_bboxes, mixedup_areas = [], []
-    for bbox, s_bbox, area, s_area in zip(bboxes, shuffled_bboxes, areas, shuffled_areas):
-        mixedup_bboxes.append(bbox + s_bbox)
-        mixedup_areas.append(area + s_area)
-    
-    return mixedup_images, mixedup_bboxes, mixedup_areas, indices.numpy()
+import torch
+import torch.nn as nn
+
+class Mixup(nn.Module):
+    def __init__(self, beta):
+        super(Mixup, self).__init__()
+        self.beta = beta
+
+    def forward(self, x, l):
+        batch_size = x.size(0)
+        mix = torch.distributions.Beta(self.beta, self.beta).sample([batch_size, 1, 1, 1])
+        mix = torch.max(mix, 1 - mix)
+        x_mix = x * mix + x.flip(dims=[0]) * (1 - mix)
+        l_mix = l * mix[:, :, 0, 0] + l.flip(dims=[0]) * (1 - mix[:, :, 0, 0])
+        return x_mix, l_mix
