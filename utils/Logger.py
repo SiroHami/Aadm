@@ -1,7 +1,7 @@
 import sys
 
 class Logger(object): #you should logger=Logger() and logger.open("asdasd.txt")
-    def __init__(self, local_rank=0, no_save=False):
+    def __init__(self, local_rank=0, no_save=False, **kwargs):
         self.terminal = sys.stdout #like print, sysout to disply, faster than print
         self.file = None #open notepad(.txt) and save it
         self.local_rank = local_rank
