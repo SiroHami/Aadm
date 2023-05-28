@@ -187,4 +187,30 @@ def test():
     y = net(Variable(torch.randn(1,3,32,32)))
     print(y.size())
 
-# test()
+# test
+
+def _test():
+
+    pretrained = False
+
+    models = [
+        ResNet18(),
+        ResNet34(),
+        ResNet50(),
+        ResNet101(),
+        ResNet152(),
+    ]
+
+    for model in models:
+
+        net = model(pretrained=pretrained)
+
+        net.eval()
+        print("model={}, {}".format(model.__class__.__name__, net))
+
+        x = torch.randn(1, 3, 32, 32)
+        y = net(x)
+        print(y.size())
+
+if __name__ == '__main__':
+    _test()

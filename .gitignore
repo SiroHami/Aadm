@@ -8,3 +8,6 @@ result/
 datasets/__pycache__
 models/__pycache__
 utils/__pycache__
+
+#.vscode
+.vscode/

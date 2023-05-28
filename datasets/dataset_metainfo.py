@@ -5,7 +5,7 @@
 """
 
 import os
-import numpy as np
+
 
 class DatasetMetaInfo(object):
     """
@@ -23,18 +23,21 @@ class DatasetMetaInfo(object):
         self.in_channels = None
         self.num_classes = None
         self.input_image_size = None
-        self.unlabled = None #choose number of unlabel data 
-        self.labeled_train_metric_capts = None #labeled_train_metric_capts
-        self.labeled_train_metric_names = None #labeled_train_metric name
-        self.labeled_train_metric_extra_kwargs = None #extra kwargs
-        self.labeled_train_use_weighted_sampler = False
-        self.unlabeled_train_metric_capts = None #unlabeled_train_metric_capts
-        self.unlabeled_train_metric_names = None #unlabeled_train_metric name
-        self.unlabeled_train_metric_extra_kwargs = None #extra kwargs
-        self.unlabeled_train_use_weighted_sampler = False
+        #train_labeled
+        self.train_labeled_metric_capts = None
+        self.train_labeled_metric_names = None
+        self.train_labeled_metric_extra_kwargs = None
+        self.train_labeled_use_weighted_sampler = False
+        #train_unlabeled
+        self.train_unlabeled_metric_capts = None
+        self.train_unlabeled_metric_names = None
+        self.train_unlabeled_metric_extra_kwargs = None
+        self.train_unlabeled_use_weighted_sampler = False
+        #val
         self.val_metric_capts = None
         self.val_metric_names = None
         self.val_metric_extra_kwargs = None
+        #test
         self.test_metric_capts = None
         self.test_metric_names = None
         self.test_metric_extra_kwargs = None
@@ -44,34 +47,6 @@ class DatasetMetaInfo(object):
         self.train_net_extra_kwargs = None
         self.test_net_extra_kwargs = None
         self.load_ignore_extra = False
-
-def train_val_split(labels, n_labeled_per_class):
-    labels = np.array(labels)
-    train_labeled_idxs = []
-    train_unlabeled_idxs = []
-    val_idxs = []
-
-    if n_labeled_per_class == 'full':
-        for i in range(10):
-            idxs = np.where(labels == i)[0]
-            np.random.shuffle(idxs)
-            train_unlabeled_idxs.extend(idxs[n_labeled_per_class:-500])
-            val_idxs.extend(idxs[-500:])
-        np.random.shuffle(train_labeled_idxs)
-        np.random.shuffle(val_idxs)
-        return train_labeled_idxs, val_idxs
-
-    else:
-        for i in range(10):
-            idxs = np.where(labels == i)[0]
-            np.random.shuffle(idxs)
-            train_labeled_idxs.extend(idxs[:n_labeled_per_class])
-            train_unlabeled_idxs.extend(idxs[n_labeled_per_class:-500])
-            val_idxs.extend(idxs[-500:])
-        np.random.shuffle(train_labeled_idxs)
-        np.random.shuffle(train_unlabeled_idxs)
-        np.random.shuffle(val_idxs)
-        return train_labeled_idxs, train_unlabeled_idxs, val_idxs
 
     def add_dataset_parser_arguments(self,
                                      parser,
@@ -102,11 +77,12 @@ def train_val_split(labels, n_labeled_per_class):
             default=self.in_channels,
             help="number of input channels")
         parser.add_argument(
-            "--unlabeled",
-            type=int,
-            default=self.unlabled,
-            help="number of unlabeled label")
-        
+            "--labeled",
+            type=int or str,
+            choices=[0, 250, 500, 1000, 2000, 4000, 'all'],
+            default=self.labeled,
+            help="number of labeled samples, you can choose from [0, 250, 500, 1000, 2000, 4000, 'all']")
+
     def update(self,
                args):
         """
@@ -120,7 +96,7 @@ def train_val_split(labels, n_labeled_per_class):
         self.root_dir_path = args.data_dir
         self.num_classes = args.num_classes
         self.in_channels = args.in_channels
-        self.unlabled = args.unlabled
+        self.labeled = args.labeled
 
     def update_from_dataset(self,
                             dataset):
