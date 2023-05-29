@@ -9,7 +9,6 @@ __all__ = ['get_dataset_metainfo', 'get_labeled_train_data_source',
 
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import WeightedRandomSampler
-import torchvision.transforms as transforms
 import torchvision
 from datasets.cifar10_dataset import CIFAR10MetaInfo
 
@@ -32,16 +31,12 @@ def get_dataset_metainfo(dataset_name):
     """
     dataset_metainfo_map = {
         "CIFAR10": CIFAR10MetaInfo,
-
     }
     if dataset_name in dataset_metainfo_map.keys():
         return dataset_metainfo_map[dataset_name]()
     else:
         raise Exception("Unrecognized dataset: {}".format(dataset_name))
-
-def baseline_data(root):
-  base_dataset = torchvision.datasets.CIFAR10(root, train=True, download=True) #CIFAR10
-  return base_dataset
+    
 
 
 def get_labeled_train_data_source(ds_metainfo,

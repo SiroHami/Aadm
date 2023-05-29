@@ -13,12 +13,38 @@ import sys
 import logging
 
 import torch
+from torch.utils.data import DataLoader
+from torch.utils.data.sampler import WeightedRandomSampler
 
 from models.model_provider import get_model
+from utils.metric import CompositeEvalMetric, EvalMetric
 
 
 def accuracy(metric, y_true, y_pred):
     return metric(y_true, y_pred).numpy()
+
+def prepare_pt_context(num_gpus,
+                       batch_size):
+    """
+    Correct batch size.
+
+    Parameters:
+    ----------
+    num_gpus : int
+        Number of GPU.
+    batch_size : int
+        Batch size for each GPU.
+
+    Returns:
+    -------
+    bool
+        Whether to use CUDA.
+    int
+        Batch size for all GPUs.
+    """
+    use_cuda = (num_gpus > 0)
+    batch_size *= max(1, num_gpus)
+    return use_cuda, batch_size
 
 def get_data(Dataset, batch_size, num_workers, is_train=True, **kwargs):
     """
@@ -49,6 +75,125 @@ def get_data(Dataset, batch_size, num_workers, is_train=True, **kwargs):
         shuffle=is_train,
         num_workers=num_workers)
     return data_loader
+
+def get_train_data_source(ds_metainfo,
+                          batch_size,
+                          num_workers):
+    """
+    Get data source for training subset.
+
+    Parameters:
+    ----------
+    ds_metainfo : DatasetMetaInfo
+        Dataset metainfo.
+    batch_size : int
+        Batch size.
+    num_workers : int
+        Number of background workers.
+
+    Returns:
+    -------
+    DataLoader
+        Data source.
+    """
+    transform_train = ds_metainfo.train_transform(ds_metainfo=ds_metainfo)
+    kwargs = ds_metainfo.dataset_class_extra_kwargs if ds_metainfo.dataset_class_extra_kwargs is not None else {}
+    dataset = ds_metainfo.dataset_class(
+        root=ds_metainfo.root_dir_path,
+        mode="train",
+        transform=transform_train,
+        **kwargs)
+    ds_metainfo.update_from_dataset(dataset)
+    if not ds_metainfo.train_use_weighted_sampler:
+        return DataLoader(
+            dataset=dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            num_workers=num_workers,
+            pin_memory=True)
+    else:
+        sampler = WeightedRandomSampler(
+            weights=dataset.sample_weights,
+            num_samples=len(dataset))
+        return DataLoader(
+            dataset=dataset,
+            batch_size=batch_size,
+            # shuffle=True,
+            sampler=sampler,
+            num_workers=num_workers,
+            pin_memory=True)
+
+
+def get_val_data_source(ds_metainfo,
+                        batch_size,
+                        num_workers):
+    """
+    Get data source for validation subset.
+
+    Parameters:
+    ----------
+    ds_metainfo : DatasetMetaInfo
+        Dataset metainfo.
+    batch_size : int
+        Batch size.
+    num_workers : int
+        Number of background workers.
+
+    Returns:
+    -------
+    DataLoader
+        Data source.
+    """
+    transform_val = ds_metainfo.val_transform(ds_metainfo=ds_metainfo)
+    kwargs = ds_metainfo.dataset_class_extra_kwargs if ds_metainfo.dataset_class_extra_kwargs is not None else {}
+    dataset = ds_metainfo.dataset_class(
+        root=ds_metainfo.root_dir_path,
+        mode="val",
+        transform=transform_val,
+        **kwargs)
+    ds_metainfo.update_from_dataset(dataset)
+    return DataLoader(
+        dataset=dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True)
+
+
+def get_test_data_source(ds_metainfo,
+                         batch_size,
+                         num_workers):
+    """
+    Get data source for testing subset.
+
+    Parameters:
+    ----------
+    ds_metainfo : DatasetMetaInfo
+        Dataset metainfo.
+    batch_size : int
+        Batch size.
+    num_workers : int
+        Number of background workers.
+
+    Returns:
+    -------
+    DataLoader
+        Data source.
+    """
+    transform_test = ds_metainfo.test_transform(ds_metainfo=ds_metainfo)
+    kwargs = ds_metainfo.dataset_class_extra_kwargs if ds_metainfo.dataset_class_extra_kwargs is not None else {}
+    dataset = ds_metainfo.dataset_class(
+        root=ds_metainfo.root_dir_path,
+        mode="test",
+        transform=transform_test,
+        **kwargs)
+    ds_metainfo.update_from_dataset(dataset)
+    return DataLoader(
+        dataset=dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True)
 
 def prepare_model(model_name,
                   use_pretrained,
@@ -269,6 +414,38 @@ def get_package_versions(package_list):
             module_versions[module] = "unknown"
     return module_versions
 
+def validate(metric,
+             net,
+             val_data,
+             use_cuda):
+    """
+    Core validation/testing routine.
+
+    Parameters:
+    ----------
+    metric : EvalMetric
+        Metric object instance.
+    net : Module
+        Model.
+    val_data : DataLoader
+        Data loader.
+    use_cuda : bool
+        Whether to use CUDA.
+
+    Returns:
+    -------
+    EvalMetric
+        Metric object instance.
+    """
+    net.eval()
+    metric.reset()
+    with torch.no_grad():
+        for data, target in val_data:
+            if use_cuda:
+                target = target.cuda(non_blocking=True)
+            output = net(data)
+            metric.update(target, output)
+    return metric
 
 def get_pyenv_info(packages,
                    pip_packages,
@@ -360,6 +537,63 @@ def pretty_print_dict2str(d):
     out_text = json.dumps(d, indent=4)
     return out_text
 
+def get_metric(metric_name, metric_extra_kwargs):
+    """
+    Get metric by name.
+
+    Parameters:
+    ----------
+    metric_name : str
+        Metric name.
+    metric_extra_kwargs : dict
+        Metric extra parameters.
+
+    EvalMetric
+    -------
+    EvalMetric
+        Metric object instance.
+    """
+    if metric_name == "Top1Error":
+        return Top1Error(**metric_extra_kwargs)
+    elif metric_name == "TopKError":
+        return TopKError(**metric_extra_kwargs)
+    elif metric_name == "PixelAccuracyMetric":
+        return PixelAccuracyMetric(**metric_extra_kwargs)
+    elif metric_name == "MeanIoUMetric":
+        return MeanIoUMetric(**metric_extra_kwargs)
+    elif metric_name == "CocoDetMApMetric":
+        return CocoDetMApMetric(**metric_extra_kwargs)
+    elif metric_name == "CocoHpeOksApMetric":
+        return CocoHpeOksApMetric(**metric_extra_kwargs)
+    elif metric_name == "WER":
+        return WER(**metric_extra_kwargs)
+    else:
+        raise Exception("Wrong metric name: {}".format(metric_name))
+
+def get_composite_metric(metric_names, metric_extra_kwargs):
+    """
+    Get composite metric by list of metric names.
+
+    Parameters:
+    ----------
+    metric_names : list of str
+        Metric name list.
+    metric_extra_kwargs : list of dict
+        Metric extra parameters list.
+
+    Returns:
+    -------
+    CompositeEvalMetric
+        Metric object instance.
+    """
+    if len(metric_names) == 1:
+        metric = get_metric(metric_names[0], metric_extra_kwargs[0])
+    else:
+        metric = CompositeEvalMetric()
+        for name, extra_kwargs in zip(metric_names, metric_extra_kwargs):
+            metric.add(get_metric(name, extra_kwargs))
+    return metric
+
 
 def get_env_stats(packages,
                   pip_packages,
@@ -392,3 +626,66 @@ def get_env_stats(packages,
     """
     package_versions = get_pyenv_info(packages, pip_packages, python_ver, pwd, git, sys_info)
     return pretty_print_dict2str(package_versions)
+
+def report_accuracy(metric,
+                    extended_log=False):
+    """
+    Make report string for composite metric.
+
+    Parameters:
+    ----------
+    metric : EvalMetric
+        Metric object instance.
+    extended_log : bool, default False
+        Whether to log more precise accuracy values.
+
+    Returns:
+    -------
+    str
+        Report string.
+    """
+    def create_msg(name, value):
+        if type(value) in [list, tuple]:
+            if extended_log:
+                return "{}={} ({})".format("{}", "/".join(["{:.4f}"] * len(value)), "/".join(["{}"] * len(value))).\
+                    format(name, *(value + value))
+            else:
+                return "{}={}".format("{}", "/".join(["{:.4f}"] * len(value))).format(name, *value)
+        else:
+            if extended_log:
+                return "{name}={value:.4f} ({value})".format(name=name, value=value)
+            else:
+                return "{name}={value:.4f}".format(name=name, value=value)
+
+    metric_info = metric.get()
+    if isinstance(metric, CompositeEvalMetric):
+        msg = ", ".join([create_msg(name=m[0], value=m[1]) for m in zip(*metric_info)])
+    elif isinstance(metric, EvalMetric):
+        msg = create_msg(name=metric_info[0], value=metric_info[1])
+    else:
+        raise Exception("Wrong metric type: {}".format(type(metric)))
+    return msg
+
+def get_metric_name(metric, index):
+    """
+    Get metric name by index in the composite metric.
+
+    Parameters:
+    ----------
+    metric : CompositeEvalMetric or EvalMetric
+        Metric object instance.
+    index : int
+        Index.
+
+    Returns:
+    -------
+    str
+        Metric name.
+    """
+    if isinstance(metric, CompositeEvalMetric):
+        return metric.metrics[index].name
+    elif isinstance(metric, EvalMetric):
+        assert (index == 0)
+        return metric.name
+    else:
+        raise Exception("Wrong metric type: {}".format(type(metric)))

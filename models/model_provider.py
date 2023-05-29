@@ -5,22 +5,22 @@ this code is from osmr's github
 https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/model_provider.py#L178
 
 """
-import LeNet
-import AlexNet
-import ResNet
-
 __all__ = ['get_model', 'get_model_list']
+
+from models.LeNet import LeNet
+from models.AlexNet import AlexNet
+from models.ResNet import resnet18, resnet34, resnet50, resnet101, resnet152
 
 _models = {
     'LeNet': LeNet,
 
     'AlexNet': AlexNet,
     
-    'resnet18': ResNet.resnet18,
-    'resnet34': ResNet.resnet34,
-    'resnet50': ResNet.resnet50,
-    'resnet101': ResNet.resnet101,
-    'resnet152': ResNet.resnet152,
+    'resnet18': resnet18,
+    'resnet34': resnet34,
+    'resnet50': resnet50,
+    'resnet101': resnet101,
+    'resnet152': resnet152,
     
 }
 

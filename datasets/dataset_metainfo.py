@@ -23,6 +23,7 @@ class DatasetMetaInfo(object):
         self.in_channels = None
         self.num_classes = None
         self.input_image_size = None
+        self.labeled = None
         #train_labeled
         self.train_labeled_metric_capts = None
         self.train_labeled_metric_names = None

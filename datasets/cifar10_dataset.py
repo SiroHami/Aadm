@@ -46,6 +46,7 @@ class CIFAR10MetaInfo(DatasetMetaInfo):
         self.in_channels = 3
         self.num_classes = 10
         self.input_image_size = (32, 32)
+        self.labeled = 50000
         self.train_labeled_metric_capts = ["Train.Err"]
         self.train_labeled_metric_names = ["Top1Error"]
         self.train_labeled_metric_extra_kwargs = [{"name": "err"}]
