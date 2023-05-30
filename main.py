@@ -33,6 +33,8 @@ def add_train_cls_parser_agument(parser):
     #baisc setting
     parser.add_argument('--model', type=str, required=True,
                         help='model name, see model_provider for available options')
+    parser.add_argument('--unlabel', type=str, default=0, choices = [0, 250, 500, 1000, 2000, 4000],
+                        help='unlabel dataset name, see dataset_info for available options')
     parser.add_argument('--dataset', type=str, required=True,
                         help='dataset name, see dataset_info for available options')
     parser.add_argument('--resume', type=str, default=None,

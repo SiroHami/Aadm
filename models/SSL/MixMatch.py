@@ -1,3 +1,4 @@
+import os
 import numpy as np
 
 import torch
@@ -74,4 +75,66 @@ def MixMatch(x, u, T, K,num_classes,model, batch_size):
     xdot = mixup(xhat, w)
     udot = mixup(uhat, w)
     return xdot, udot
+
+class MixMatch():
+    def __init__(self,
+                 model,
+                 num_labels,
+                 K=2,
+                 T=0.5):
+        super(MixMatch, self).__init__()
+        self.model = 'WRN'
+        self.num_labels = num_labels
+        self.K = K
+        self.T = T
+
+
+def get_mixmatch(model_name=None,
+                pretrained=False,
+                root=os.path.join('~', '.torch', 'models'),
+                **kwargs):
+    """
+    Create MixMatch model with specific parameters
+
+    Parameters
+    ----------
+    model_name : str, default
+        Model name
+    pretrained : bool, default False
+        If True, returns a model pre-trained
+    root : str, default '~/.torch/models'
+        Location for keeping the model parameters
+
+    Returns
+    -------
+    Model class
+    """
+    net = MixMatch(
+        model=model_name,
+        **kwargs)
+    
+    if pretrained:
+        if (model_name is None) or (not model_name):
+            raise ValueError("Parameter `model_name` should be properly initialized for loading pretrained model.")
+        from model_provider import download_model
+        download_model(
+            net=net,
+            model_name=model_name,
+            local_model_store_dir_path=root)
+
+    return net
+
+def mixmatch(**kwargs):
+    """
+    MixMatch model from paper MixMatch: A Holistic Approach to Semi-Supervised Learning
+    https://arxiv.org/abs/1905.02249
+
+    Parameters
+    ----------
+    pretrained : bool, default = False
+        If True, returns a CNN model pre-trained on CIFAR-10
+    root : str, default "~/.torch/models"
+        Location for keeping the model parameters.
+    """
+    return get_mixmatch(model_name='mixmatch', **kwargs)
     

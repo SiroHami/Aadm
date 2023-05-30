@@ -8,6 +8,7 @@ class DatasetInfo(object):
     def __init__(self):
         self.label = None
         self.root_dir = None
+        self.num_labels = None
         self.dataset_class = None
         self.num_train_samples = None
         self.in_channels = None

@@ -28,6 +28,7 @@ class CIFAR10Info(DatasetInfo):
     def __init__(self):
         super(CIFAR10Info, self).__init__()
         self.label = "CIFAR10"
+        self.num_labels = None
         self.root_dir = "cifar10"
         self.dataset_class = CIFAR10Fine
         self.num_train_samples = 50000
