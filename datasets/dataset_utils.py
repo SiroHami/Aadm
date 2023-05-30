@@ -1,206 +1,135 @@
 """
-    Dataset routines.
-    based by https://github.com/osmr/imgclsmob/blob/master/pytorch/datasets/cifar10_cls_dataset.py 
-    Add unsupervised 
+    utils for dataset
+
+    code from https://github.com/osmr/imgclsmob/blob/master/pytorch/dataset_utils.py
 """
 
-__all__ = ['get_dataset_metainfo', 'get_labeled_train_data_source',
-           'get_labeled_train_data_source', 'get_val_data_source', 'get_test_data_source']
+__all__ = ['get_dataset_info', 'get_train_data_info', 'get_val_data_info', 'get_test_data_info']
+
 
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import WeightedRandomSampler
-import torchvision
-from datasets.cifar10_dataset import CIFAR10MetaInfo
+
+import dataset_info
+from CIFAR10_cls import CIFAR10Info
 
 
-
-
-def get_dataset_metainfo(dataset_name):
+def get_dataset_info(dataset_name):
     """
-    Get dataset metainfo by name of dataset.
-
+    Get dataset info.
+    
     Parameters:
     ----------
     dataset_name : str
-        Dataset name.
-
-    Returns:
-    -------
-    DatasetMetaInfo
-        Dataset metainfo.
-    """
-    dataset_metainfo_map = {
-        "CIFAR10": CIFAR10MetaInfo,
-    }
-    if dataset_name in dataset_metainfo_map.keys():
-        return dataset_metainfo_map[dataset_name]()
-    else:
-        raise Exception("Unrecognized dataset: {}".format(dataset_name))
+        Name of dataset.
     
-
-
-def get_labeled_train_data_source(ds_metainfo,
-                          batch_size,
-                          num_workers):
+    Returns:
+    -------
+    DatasetInfo
+        Dataset info.
     """
-    Get data source for training subset.
+    dataset_info_dict  = {
+        "CIFAR10": CIFAR10Info()
+    }
+
+    if dataset_name not in dataset_info_dict:
+        raise ValueError("Unsupported dataset: {}".format(dataset_name))
+    
+    return dataset_info_dict[dataset_name]()
+
+def get_train_data_info(dataset_info, batch_size, num_worker):
+    """
+    Get train data info.
 
     Parameters:
     ----------
-    ds_metainfo : DatasetMetaInfo
-        Dataset metainfo.
+    dataset_info : DatasetInfo
+        Dataset info.
     batch_size : int
         Batch size.
-    num_workers : int
-        Number of background workers.
+    num_worker : int
+        Number of workers.
 
     Returns:
     -------
     DataLoader
-        Data source.
+        Train data Information.
     """
-    transform_labeled_train = ds_metainfo.labeled_train_transform(ds_metainfo=ds_metainfo)
-    kwargs = ds_metainfo.dataset_class_extra_kwargs if ds_metainfo.dataset_class_extra_kwargs is not None else {}
-    dataset = ds_metainfo.dataset_class(
-        root=ds_metainfo.root_dir_path,
-        mode="train",
-        transform=transform_labeled_train,
-        **kwargs)
-    ds_metainfo.update_from_dataset(dataset)
-    if not ds_metainfo.train_use_weighted_sampler:
-        return DataLoader(
-            dataset=dataset,
-            batch_size=batch_size,
-            shuffle=True,
-            num_workers=num_workers,
-            pin_memory=True)
+    tranform_train = dataset_info.get_train_transform(dataset_info)
+    kwargs = dataset_info.get_train_loader_kwargs
+    dataset = dataset_info.dataset_class(root=dataset_info.root_dir, mode="train", trainsform=tranform_train, **kwargs)
+    dataset_info.update_from_dataset(dataset)
+    if not dataset_info.train_use_weighted_sampler:
+        train_data_info = DataLoader(dataset=dataset,
+                                        batch_size=batch_size,
+                                        shuffle=True,
+                                        num_workers=num_worker,
+                                        pin_memory=True)
+        return train_data_info
     else:
-        sampler = WeightedRandomSampler(
-            weights=dataset.sample_weights,
-            num_samples=len(dataset))
-        return DataLoader(
-            dataset=dataset,
-            batch_size=batch_size,
-            # shuffle=True,
-            sampler=sampler,
-            num_workers=num_workers,
-            pin_memory=True)
+        sampler = WeightedRandomSampler(weights=dataset.sample_weights,
+                                        num_samples=len(dataset))
+        train_data_info = DataLoader(dataset=dataset,
+                                        batch_size=batch_size,
+                                        sampler=sampler,
+                                        num_workers=num_worker,
+                                        pin_memory=True)
+        return train_data_info
 
-def get_unlabeled_train_data_source(ds_metainfo,
-                          batch_size,
-                          num_workers):
+def get_val_data_info(dataset_info, batch_size, num_worker):
     """
-    Get data source for training subset.
+    Get val data info.
 
     Parameters:
     ----------
-    ds_metainfo : DatasetMetaInfo
-        Dataset metainfo.
+    dataset_info : DatasetInfo
+        Dataset info.
     batch_size : int
         Batch size.
-    num_workers : int
-        Number of background workers.
+    num_worker : int
+        Number of workers.
 
     Returns:
     -------
     DataLoader
-        Data source.
+        Val data Information.
     """
-    transform_unlabeled_train = ds_metainfo.unlabeled_train_transform(ds_metainfo=ds_metainfo)
-    kwargs = ds_metainfo.dataset_class_extra_kwargs if ds_metainfo.dataset_class_extra_kwargs is not None else {}
-    dataset = ds_metainfo.dataset_class(
-        root=ds_metainfo.root_dir_path,
-        mode="train",
-        transform=transform_unlabeled_train,
-        **kwargs)
-    ds_metainfo.update_from_dataset(dataset)
-    if not ds_metainfo.train_use_weighted_sampler:
-        return DataLoader(
-            dataset=dataset,
-            batch_size=batch_size,
-            shuffle=True,
-            num_workers=num_workers,
-            pin_memory=True)
-    else:
-        sampler = WeightedRandomSampler(
-            weights=dataset.sample_weights,
-            num_samples=len(dataset))
-        return DataLoader(
-            dataset=dataset,
-            batch_size=batch_size,
-            # shuffle=True,
-            sampler=sampler,
-            num_workers=num_workers,
-            pin_memory=True)
+    tranform_val = dataset_info.get_val_transform(dataset_info)
+    kwargs = dataset_info.get_val_loader_kwargs
+    dataset = dataset_info.dataset_class(root=dataset_info.root_dir, mode="val", trainsform=tranform_val, **kwargs)
+    dataset_info.update_from_dataset(dataset)
+    val_data_info = DataLoader(dataset=dataset,
+                                batch_size=batch_size,
+                                shuffle=False,
+                                num_workers=num_worker,
+                                pin_memory=True)
+    return val_data_info
 
-
-def get_val_data_source(ds_metainfo,
-                        batch_size,
-                        num_workers):
+def get_test_data_info(dataset_info, batch_size, num_worker):
     """
-    Get data source for validation subset.
+    Get test data info.
 
     Parameters:
     ----------
-    ds_metainfo : DatasetMetaInfo
-        Dataset metainfo.
+    dataset_info : DatasetInfo
+        Dataset info.
     batch_size : int
         Batch size.
-    num_workers : int
-        Number of background workers.
+    num_worker : int
+        Number of workers.
 
     Returns:
     -------
     DataLoader
-        Data source.
+        Test data Information.
     """
-    transform_val = ds_metainfo.val_transform(ds_metainfo=ds_metainfo)
-    kwargs = ds_metainfo.dataset_class_extra_kwargs if ds_metainfo.dataset_class_extra_kwargs is not None else {}
-    dataset = ds_metainfo.dataset_class(
-        root=ds_metainfo.root_dir_path,
-        mode="val",
-        transform=transform_val,
-        **kwargs)
-    ds_metainfo.update_from_dataset(dataset)
-    return DataLoader(
-        dataset=dataset,
-        batch_size=batch_size,
-        shuffle=False,
-        num_workers=num_workers,
-        pin_memory=True)
-
-
-def get_test_data_source(ds_metainfo,
-                         batch_size,
-                         num_workers):
-    """
-    Get data source for testing subset.
-
-    Parameters:
-    ----------
-    ds_metainfo : DatasetMetaInfo
-        Dataset metainfo.
-    batch_size : int
-        Batch size.
-    num_workers : int
-        Number of background workers.
-
-    Returns:
-    -------
-    DataLoader
-        Data source.
-    """
-    transform_test = ds_metainfo.test_transform(ds_metainfo=ds_metainfo)
-    kwargs = ds_metainfo.dataset_class_extra_kwargs if ds_metainfo.dataset_class_extra_kwargs is not None else {}
-    dataset = ds_metainfo.dataset_class(
-        root=ds_metainfo.root_dir_path,
-        mode="test",
-        transform=transform_test,
-        **kwargs)
-    ds_metainfo.update_from_dataset(dataset)
-    return DataLoader(
-        dataset=dataset,
-        batch_size=batch_size,
-        shuffle=False,
-        num_workers=num_workers,
-        pin_memory=True)
+    tranform_test = dataset_info.get_test_transform(dataset_info)
+    kwargs = dataset_info.get_test_loader_kwargs
+    dataset = dataset_info.dataset_class(root=dataset_info.root_dir, mode="test", trainsform=tranform_test, **kwargs)
+    dataset_info.update_from_dataset(dataset)
+    test_data_info = DataLoader(dataset=dataset,
+                                batch_size=batch_size,
+                                shuffle=False,
+                                num_workers=num_worker,
+                                pin_memory=True)
+    return test_data_info

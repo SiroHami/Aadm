@@ -7,22 +7,52 @@ https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/model_provider.p
 """
 __all__ = ['get_model', 'get_model_list']
 
-from models.LeNet import LeNet
-from models.AlexNet import AlexNet
-from models.ResNet import resnet18, resnet34, resnet50, resnet101, resnet152
+from models.CNN.LeNet import LeNet
+from models.CNN.AlexNet import AlexNet
+from models.CNN.ResNet import *
+from models.CNN.WideResNet import *
+from models.SSL import *
 
 _models = {
+    #CNN
     'LeNet': LeNet,
 
     'AlexNet': AlexNet,
     
+    'ResNet': ResNet,
+    'resnet10': resnet10,
+    'resnet12': resnet12,
+    'resnet14': resnet14,
+    'resnet14b': resnetbc14b,
+    'resnet16': resnet16,
+    'resnet18_wd4': resnet18_wd4,
+    'resnet18_wd2': resnet18_wd2,
+    'resnet18_w3d4': resnet18_w3d4,
     'resnet18': resnet18,
+    'resnet26': resnet26,
+    'resnetbc26b': resnetbc26b,
     'resnet34': resnet34,
-    'resnet50': resnet50,
-    'resnet101': resnet101,
-    'resnet152': resnet152,
+    'resnetbc38b': resnetbc38b,
+    'resnet50' : resnet50,
+    'resnet50b' : resnet50b,
+    'resnt101' : resnet101,
+    'resnet101b' : resnet101b,
+    'resnet152' : resnet152,
+    'resnet152b' : resnet152b,
+    'resnet200' : resnet200,
+    'resnet200b' : resnet200b,
+    'ResBlock' : ResBlock,
+    'ResBottleneck' : ResBottleneck,
+    'ResUnit' : ResUnit,
+    'ResInitBlock' : ResInitBlock,
     
-}
+    'WRN' : WRN,
+    'wrn50_2' : wrn50_2,
+
+
+    #SSL
+    'MixMatch' : 'mixmatch'
+    }
 
 def get_model(name, **kwargs):
     """
