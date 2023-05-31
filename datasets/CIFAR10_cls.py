@@ -29,20 +29,20 @@ class CIFAR10Info(DatasetInfo):
         super(CIFAR10Info, self).__init__()
         self.label = "CIFAR10"
         self.num_labels = None
-        self.root_dir = "cifar10"
+        self.root_dir = "CIFAR10"
         self.dataset_class = CIFAR10Fine
         self.num_train_samples = 50000
         self.in_channels = 3
         self.num_classes = 10
         self.input_size = (32, 32)
-        self.train_metric = "Train.Error"
-        self.train_metric_name = "Top1Error"
-        self.val_metric = "Val.Error"
-        self.val_metric_name = "Top1Error"
+        self.train_metric = ["Train.Error"]
+        self.train_metric_name = ["Top1Error"]
+        self.val_metric = ["Val.Error"]
+        self.val_metric_name = ["Top1Error"]
         self.saver_acc_ind = 0
-        self.train_transfom = None
-        self.val_transfom = None
-        self.test_transfom = None
+        self.train_transfom = cifar10_train_transform
+        self.val_transfom = cifar10_val_transform
+        self.test_transfom = cifar10_val_transform
 
 
 def cifar10_train_transform(ds_metainfo,

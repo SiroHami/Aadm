@@ -21,7 +21,7 @@ from train_log_param_saver import TrainLogParamSaver
 from utils import prepare_pt_context, report_accuracy, validate
 
 
-def add_train_cls_parser_agument(parser):
+def add_train_cls_parser_arguments(parser):
     """
     Create python argparse parser for training
 
@@ -35,8 +35,6 @@ def add_train_cls_parser_agument(parser):
                         help='model name, see model_provider for available options')
     parser.add_argument('--label', type=str or int, default='full', choices = [0, 250, 500, 1000, 2000, 4000, 'full'],
                         help='label dataset name, see dataset_info for available options')
-    parser.add_argument('--dataset', type=str, required=True,
-                        help='dataset name, see dataset_info for available options')
     parser.add_argument('--resume', type=str, default=None,
                         help='path to checkpoint to resume training')
     parser.add_argument('--resume-idr', type=str, default='',
@@ -71,11 +69,11 @@ def add_train_cls_parser_agument(parser):
     #augmentation setting
     parser.add_argument('--label-smoothing', type=float, default=0.1,
                         help='label smoothing')
-    parser.add_agumnet('--mixup', type=float, default=0.0,
+    parser.add_argument('--mixup', type=float, default=0.0,
                         help='mixup alpha, mixup enabled if > 0.0')
     parser.add_argument('--mixup-off-epoch', type=int, default=0,
                         help='how many last epochs to train without mixup, if mixup enabled')
-    parser.add_argument('--mixup-alpha', type=float, default=1.0,
+    parser.add_argument('--mixup-alpha', type=float, default=None,
                         help='mixup alpha, mixup enabled if > 0.0')
     #log setting
     parser.add_argument('--log-interval', type=int, default=50,
@@ -84,7 +82,7 @@ def add_train_cls_parser_agument(parser):
                         help='saving parameters epoch interval, best model will always be saved')
     parser.add_argument('--save-dir', type=str, default='checkpoints',
                         help='directory name to save')
-    parser.add_argumnet('--save-name', type=str, default='train.log',
+    parser.add_argument('--logging-file-name', type=str, default='train.log',
                         help='file name to save')
     parser.add_argument('--log-packages', type=str, default='torch, torchvision',
                         help='list of python packages for logging')
@@ -106,16 +104,17 @@ def parse_args():
     args : argparse.Namespace
         input arguments
     """
-    parser = argparse.ArgumentParser(description='DeepLearning Models with Pytorch')
-    parser.add_argument('--dataset', type=str, required=True,
+    parser = argparse.ArgumentParser(description='DeepLearning Models with Pytorch',
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--dataset', type=str, default="CIFAR10",
                         help='dataset name, see dataset_info for available options')
     parser.add_argument('--work-dir', type=str, default=os.path.join("..", "data"),
                         help='the dir to working dir for dataset root path')
     args, _ = parser.parse_known_args()
-    dataset_info = get_dataset_info(args.dataset)
-    dataset_info.add_dataset_parser_agument(parser,
-                                            working_dir=args.work_dir)
-    add_train_cls_parser_agument(parser)
+    dataset_info = get_dataset_info(dataset_name=args.dataset)
+    dataset_info.add_dataset_parser_agument(parser =parser,
+                                            work_dir=args.work_dir)
+    add_train_cls_parser_arguments(parser)
     args = parser.parse_args()
     return args
 

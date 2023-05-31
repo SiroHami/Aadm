@@ -30,11 +30,11 @@ class DatasetInfo(object):
         self.test_net_extra_kwargs = None
         self.load_ignore_extra = False
 
-    def add_dataset_parser(self, parser, work_dir_path):
+    def add_dataset_parser_agument(self, parser, work_dir):
         """
         create python argparse parser for dataset
         """
-        parser.add_argument('--data-dir', type=str, default=os.path.join(work_dir_path, self.root_dir),
+        parser.add_argument('--data-dir', type=str, default=os.path.join(work_dir, self.root_dir),
                             help='path to directory with data')
         parser.add_argument('--num-classes', type=int, default=self.num_classes,
                             help='number of classes')

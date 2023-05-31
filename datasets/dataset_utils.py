@@ -10,7 +10,7 @@ __all__ = ['get_dataset_info', 'get_train_data_info', 'get_val_data_info', 'get_
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import WeightedRandomSampler
 
-from datasets.CIFAR10_cls import *
+from .CIFAR10_cls import *
 
 
 def get_dataset_info(dataset_name):
@@ -31,10 +31,10 @@ def get_dataset_info(dataset_name):
         "CIFAR10": CIFAR10Info
     }
 
-    if dataset_name not in dataset_info_dict:
-        raise ValueError("Unsupported dataset: {}".format(dataset_name))
-    
-    return dataset_info_dict[dataset_name]()
+    if dataset_name in dataset_info_dict.keys():
+        return dataset_info_dict[dataset_name]()
+    else:
+        raise Exception("Unrecognized dataset: {}".format(dataset_name))
 
 def get_train_data_info(dataset_info, batch_size, num_worker):
     """
