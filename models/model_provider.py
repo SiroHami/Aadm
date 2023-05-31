@@ -7,11 +7,11 @@ https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/model_provider.p
 """
 __all__ = ['get_model', 'get_model_list']
 
-from models.CNN.LeNet import LeNet
-from models.CNN.AlexNet import AlexNet
-from models.CNN.ResNet import *
-from models.CNN.WideResNet import *
-from models.SSL import *
+from CNN.LeNet import LeNet
+from CNN.AlexNet import AlexNet
+from CNN.ResNet import *
+from CNN.WideResNet import *
+from SSL.MixMatch import *
 
 _models = {
     #CNN

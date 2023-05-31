@@ -13,17 +13,11 @@ __all__ = ['ResNet', 'resnet10', 'resnet12', 'resnet14', 'resnetbc14b', 'resnet1
            'resnet101', 'resnet101b', 'resnet152', 'resnet152b', 'resnet200', 'resnet200b', 'ResBlock', 'ResBottleneck',
            'ResUnit', 'ResInitBlock']
 
+
 import os
 import torch.nn as nn
 
-def conv1x1_block(in_planes, out_planes, stride=1):
-    return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, padding=1, bias=False)
-
-def conv3x3_block(in_planes, out_planes, stride=1):
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False)
-
-def conv7x7_block(in_planes, out_planes, stride=1):
-    return nn.Conv2d(in_planes, out_planes, kernel_size=7, stride=stride, padding=1, bias=False)
+from models.CNN.blocks import conv1x1_block, conv3x3_block, conv7x7_block
 
 
 class ResBlock(nn.Module):

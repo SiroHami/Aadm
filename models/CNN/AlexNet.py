@@ -1,14 +1,17 @@
 """
-Implementation of AlexNet, from paper
-"ImageNet Classification with Deep Convolutional Neural Networks" by Alex Krizhevsky et al.
+    Implementation of AlexNet, from paper
+    "ImageNet Classification with Deep Convolutional Neural Networks" by Alex Krizhevsky et al.
+    original paper: https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
 
-url: https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
+    url: https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
 """
 
 __all__ = ['AlexNet']
 
+import os
 import torch
 import torch.nn as nn
+import torch.nn.init as init
 
 
 class AlexNet(nn.Module):
