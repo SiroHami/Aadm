@@ -1,8 +1,18 @@
+"""
+Implementation of MixMaatch, from paper MixMatch: A Holistic Approach to Semi-Supervised Learning
+https://arxiv.org/abs/1905.02249
+"""
+
+__all__ = ['MixMatch', 'mixmatch']
+
 import os
 import numpy as np
 
 import torch
 import torchvision.transforms as transforms
+
+from models.CNN.WideResNet import wrn50_2
+
 
 #one hot label function
 def onehot(label, n_classes):
@@ -59,6 +69,7 @@ def mixmatch_augmenter():
     return agument
 
 #MixMatch function
+"""
 def MixMatch(x, u, T, K,num_classes,model, batch_size):
     for i in range(batch_size):
         x[i] = mixmatch_augmenter(x[i])
@@ -75,19 +86,49 @@ def MixMatch(x, u, T, K,num_classes,model, batch_size):
     xdot = mixup(xhat, w)
     udot = mixup(uhat, w)
     return xdot, udot
+"""
 
-class MixMatch():
+class MixMatch(object):
+    """
+    MixMatch model
+
+    Parameters
+    ----------
+    
+    """
     def __init__(self,
-                 model,
-                 num_labels,
-                 K=2,
-                 T=0.5):
-        super(MixMatch, self).__init__()
-        self.model = 'WRN'
-        self.num_labels = num_labels
-        self.K = K
-        self.T = T
+                    model,
+                    x,
+                    u,
+                    num_classes=10,
+                    T=0.5,
+                    K=2,
+                    batch_size=64,
+                    **kwargs):
+            super(MixMatch, self).__init__(**kwargs)
+            self.num_classes = num_classes
+            self.x = x
+            self.u = u
+            self.T = T
+            self.K = K
+            self.batch_size = batch_size
+            self.model = model
 
+            for i in range(batch_size):
+                x[i] = mixmatch_augmenter(x[i])
+                for i in range(K):
+                    u[i] = mixmatch_augmenter(u[i])
+                qb= torch.mean(label_guessing(model, u, K))
+                q = sharpen(qb, T)
+            p = onehot(x.target, num_classes)
+            xhat = torch.cat((x, p), dim=0)
+            uhat = torch.cat((u, q), dim=0)
+            sxhat = torch.randperm(xhat)
+            suhat = torch.randperm(uhat)
+            w = torch.cat((sxhat, suhat), dim=0)
+            xdot = mixup(xhat, w)
+            udot = mixup(uhat, w)
+            return xdot, udot
 
 def get_mixmatch(model_name=None,
                 pretrained=False,
@@ -138,3 +179,12 @@ def mixmatch(**kwargs):
     """
     return get_mixmatch(model_name='mixmatch', **kwargs)
     
+
+
+
+def _test():
+
+    mixmatch = MixMatch()
+
+if __name__ == "__main__":
+    _test()

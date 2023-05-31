@@ -31,9 +31,9 @@ def add_train_cls_parser_arguments(parser):
         input parser
     """
     #baisc setting
-    parser.add_argument('--model', type=str, required=True,
+    parser.add_argument('--model', type=str, default='resnet18',
                         help='model name, see model_provider for available options')
-    parser.add_argument('--label', type=int, default='full', choices = [0, 250, 500, 1000, 2000, 4000, 'full'],
+    parser.add_argument('--label', type=int, default=250, choices = [0, 250, 500, 1000, 2000, 4000, 500000],
                         help='label dataset name, see dataset_info for available options')
     parser.add_argument("--use-pretrained",action="store_true",
                         help="enable using pretrained model from github repo")
@@ -108,7 +108,7 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description='DeepLearning Models with Pytorch',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--dataset', type=str, default="CIFAR10",
+    parser.add_argument('--dataset', type=str, default="CIFAR10_SL",
                         help='dataset name, see dataset_info for available options')
     parser.add_argument('--work-dir', type=str, default=os.path.join("..", "data"),
                         help='the dir to working dir for dataset root path')

@@ -7,8 +7,8 @@ https://github.com/osmr/imgclsmob/blob/master/pytorch/pytorchcv/model_provider.p
 """
 __all__ = ['get_model', 'get_model_list']
 
-from .CNN.LeNet import LeNet
-from .CNN.AlexNet import AlexNet
+from .CNN.LeNet import *
+from .CNN.AlexNet import *
 from .CNN.ResNet import *
 from .CNN.WideResNet import *
 from .SSL.MixMatch import *
@@ -50,7 +50,7 @@ _models = {
 
 
     #SSL
-    'MixMatch' : mixmatch
+    'MixMatch' : MixMatch
     }
 
 def get_model(name, **kwargs):

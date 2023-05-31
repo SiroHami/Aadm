@@ -19,6 +19,9 @@ class DatasetInfo(object):
         self.train_metric = None
         self.train_metric_name = None
         self.train_use_weighted_sampler = False
+        self.train_un_metric = None
+        self.train_un_metric_name = None
+        self.train_use_multiepoch_sampler = False
         self.val_metric = None
         self.val_metric_name = None
         self.test_metric = None

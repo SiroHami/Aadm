@@ -10,8 +10,8 @@ __all__ = ['get_dataset_info', 'get_train_data_info', 'get_val_data_info', 'get_
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import WeightedRandomSampler
 
-from .CIFAR10_cls import *
-
+from .CIFAR10_SL_cls import *
+from .CIFAR10_SSL_cls import *
 
 def get_dataset_info(dataset_name):
     """
@@ -28,7 +28,8 @@ def get_dataset_info(dataset_name):
         Dataset info.
     """
     dataset_info_dict  = {
-        "CIFAR10": CIFAR10Info
+        "CIFAR10_SL": CIFAR10_SL_Info,
+        "CIFAR10_SSL": CIFAR10_SSL_Info
     }
 
     if dataset_name in dataset_info_dict.keys():
