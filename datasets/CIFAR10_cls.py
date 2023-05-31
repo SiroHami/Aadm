@@ -5,7 +5,7 @@ CIFAR10 dataset
 import os
 from torchvision.datasets import CIFAR10
 import torchvision.transforms as transforms
-from dataset_info import DatasetInfo
+from .dataset_info import DatasetInfo
 
 class CIFAR10Fine(CIFAR10):
     """

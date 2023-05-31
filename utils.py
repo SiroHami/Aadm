@@ -6,8 +6,8 @@ import logging
 import os
 import numpy as np
 import torch.utils.data
-from .models.model_provider import get_model
-from .metrics import EvalMetric, CompositeEvalMetric
+from models.model_provider import get_model
+from metrics import EvalMetric, CompositeEvalMetric
 
 
 def prepare_pt_context(num_gpus,
