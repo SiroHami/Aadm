@@ -11,8 +11,8 @@ import os
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
-from blocks import ConvBlock, LinearBlock
 
+from models.CNN.blocks import ConvBlock
 
 class LeNetConv(ConvBlock):
     """
@@ -67,10 +67,10 @@ class LeNetOuputBlock(nn.Module):
         super(LeNetOuputBlock, self).__init__()
         mid_channels = 120
 
-        self.fc1 = LinearBlock(
+        self.fc1 = nn.Linear(
             in_channels=in_channels,
             out_channels=mid_channels)
-        self.fc2 = LinearBlock(
+        self.fc2 = nn.Linear(
             in_channels=mid_channels,
             out_channels=mid_channels)
         self.fc3 = nn.Linear(

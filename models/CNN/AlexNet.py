@@ -14,7 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
 
-from blocks import ConvBlock
+from models.CNN.blocks import ConvBlock
 
 
 class AlexConv(ConvBlock):

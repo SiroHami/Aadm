@@ -6,21 +6,29 @@ import os
 
 class DatasetInfo(object):
     def __init__(self):
+        self.use_imgrec = None
         self.label = None
         self.root_dir = None
         self.num_labels = None
         self.dataset_class = None
+        self.dataset_class_extra_kwargs = None
         self.num_train_samples = None
         self.in_channels = None
         self.num_classes = None
         self.input_size = None
         self.train_metric = None
         self.train_metric_name = None
+        self.train_use_weighted_sampler = False
         self.val_metric = None
         self.val_metric_name = None
         self.test_metric = None
         self.test_metric_name = None
         self.saver_acc_ind = None
+        self.ml_type = None
+        self.allow_hybridize = True
+        self.train_net_extra_kwargs = None
+        self.test_net_extra_kwargs = None
+        self.load_ignore_extra = False
 
     def add_dataset_parser(self, parser, work_dir_path):
         """

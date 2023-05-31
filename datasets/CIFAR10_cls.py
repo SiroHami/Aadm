@@ -12,7 +12,7 @@ class CIFAR10Fine(CIFAR10):
     CIFAR10 dataset which returns the label as well
     """
     def __init__(self, 
-                 root = os.path.join(".torch", "datasets", "cifar10"), 
+                 root = os.path.join("~",".torch", "datasets", "cifar10"), 
                  mode = "train",
                  transform=None):
         super(CIFAR10Fine, self).__init__(
@@ -43,3 +43,37 @@ class CIFAR10Info(DatasetInfo):
         self.train_transfom = None
         self.val_transfom = None
         self.test_transfom = None
+
+
+def cifar10_train_transform(ds_metainfo,
+                            mean_rgb=(0.4914, 0.4822, 0.4465),
+                            std_rgb=(0.2023, 0.1994, 0.2010),
+                            jitter_param=0.4):
+    assert (ds_metainfo is not None)
+    assert (ds_metainfo.input_image_size[0] == 32)
+    return transforms.Compose([
+        transforms.RandomCrop(
+            size=32,
+            padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.ColorJitter(
+            brightness=jitter_param,
+            contrast=jitter_param,
+            saturation=jitter_param),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=mean_rgb,
+            std=std_rgb)
+    ])
+
+
+def cifar10_val_transform(ds_metainfo,
+                          mean_rgb=(0.4914, 0.4822, 0.4465),
+                          std_rgb=(0.2023, 0.1994, 0.2010)):
+    assert (ds_metainfo is not None)
+    return transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=mean_rgb,
+            std=std_rgb)
+    ])
