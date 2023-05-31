@@ -113,7 +113,7 @@ def parse_args():
     parser.add_argument('--work-dir', type=str, default=os.path.join("..", "data"),
                         help='the dir to working dir for dataset root path')
     args, _ = parser.parse_known_args()
-    dataset_info = get_dataset_info(dataset_name=args.dataset)
+    dataset_info = get_dataset_info(dataset=args.dataset)
     dataset_info.add_dataset_parser_agument(parser =parser,
                                             work_dir=args.work_dir)
     add_train_cls_parser_arguments(parser)
@@ -466,15 +466,15 @@ def main():
     real_net = net.module if hasattr(net, "module") else net
     num_classes = real_net.num_classes
 
-    dataset_info = get_dataset_info(dataset_name=args.dataset_name)
-    dataset_info.updatae(args=args)
+    dataset_info = get_dataset_info(dataset=args.dataset)
+    dataset_info.update(args=args)
 
     train_data = get_train_data_info(
-        dataset_name=dataset_info,
+        dataset_info=dataset_info,
         batch_size=batch_size,
         num_workers=args.num_workers)
     val_data = get_val_data_info(
-        dataset_name=dataset_info,
+        dataset_info=dataset_info,
         batch_size=batch_size,
         num_workers=args.num_workers)
     

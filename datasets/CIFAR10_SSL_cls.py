@@ -46,22 +46,22 @@ class CIFAR10_SSL_Info(DatasetInfo):
         self.num_train_samples = 50000
         self.in_channels = 3
         self.num_classes = 10
-        self.input_size = (32, 32)
+        self.input_image_size = (32, 32)
         self.train_metric = ["Train.Error"]
         self.train_metric_name = ["Top1Error"]
         self.val_metric = ["Val.Error"]
         self.val_metric_name = ["Top1Error"]
         self.saver_acc_ind = 0
-        self.train_transfom = cifar10_train_transform
+        self.train_transform = cifar10_train_transform
         self.train_unlabel_transform = cifar10_train_transform
-        self.val_transfom = cifar10_val_transform
-        self.test_transfom = cifar10_val_transform
+        self.val_transform = cifar10_val_transform
+        self.test_transform = cifar10_val_transform
 
 
 def cifar10_train_transform(ds_metainfo,
                             mean_rgb=(0.4914, 0.4822, 0.4465),
                             std_rgb=(0.2023, 0.1994, 0.2010),
-                            jitter_param=None):
+                            jitter_param=0):
     assert (ds_metainfo is not None)
     assert (ds_metainfo.input_image_size[0] == 32)
     return transforms.Compose([

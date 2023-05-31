@@ -207,3 +207,241 @@ Env_stats:
     "git": "commit b855f0413de22d53e2adca15cf1bbc90d3974cec\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 20:44:50 2023 +0900\n\n    debug",
     "platform": "Windows-10-10.0.19042-SP0"
 }
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
+--------------------------------
+Script command line:
+c:/Users/INHA/Desktop/Aadm/Aadm/main.py
+Script arguments:
+Namespace(dataset='CIFAR10_SL', work_dir='..\\data', data_dir='..\\data\\CIFAR10_SL', num_classes=10, in_channels=3, model='resnet18', label=250, use_pretrained=False, resume='', resume_state='', num_gpus=0, num_workers=4, batch_size=64, num_epochs=200, optimizer_name='sgd', lr=0.1, lr_decay=0.2, lr_decay_epoch=0, decay_epoch='30,60', target_lr=1e-08, momentum=0.9, wd=0.0001, label_smoothing=0.1, mixup=0.0, mixup_off_epoch=0, mixup_alpha=None, log_interval=50, save_interval=10, save_dir='checkpoints', logging_file_name='train.log', log_packages='torch, torchvision', log_pip_packages='', seed=17, tune_layer='')
+Env_stats:
+{
+    "torch": "2.0.1+cpu",
+    "torchvision": "0.15.2+cpu",
+    "python": "3.9.12",
+    "pwd": "C:\\Users\\INHA\\Desktop\\Aadm\\Aadm",
+    "git": "commit a8365b93b1dea19786b33d5afafd734fdccca922\nAuthor: nanyeon99 <nanyeon99@gmail.com>\nDate:   Wed May 31 23:49:02 2023 +0900\n\n    update",
+    "platform": "Windows-10-10.0.19042-SP0"
+}
