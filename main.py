@@ -18,7 +18,7 @@ from datasets.dataset_utils import get_dataset_info, get_train_data_info, get_va
 from logger import initialize_logging
 from metrics import get_metric
 from train_log_param_saver import TrainLogParamSaver
-from utils import prepare_pt_context, report_accuracy, validate
+from utils import prepare_model, prepare_pt_context, report_accuracy, validate
 
 
 def add_train_cls_parser_arguments(parser):
@@ -33,12 +33,14 @@ def add_train_cls_parser_arguments(parser):
     #baisc setting
     parser.add_argument('--model', type=str, required=True,
                         help='model name, see model_provider for available options')
-    parser.add_argument('--label', type=str or int, default='full', choices = [0, 250, 500, 1000, 2000, 4000, 'full'],
+    parser.add_argument('--label', type=int, default='full', choices = [0, 250, 500, 1000, 2000, 4000, 'full'],
                         help='label dataset name, see dataset_info for available options')
-    parser.add_argument('--resume', type=str, default=None,
-                        help='path to checkpoint to resume training')
-    parser.add_argument('--resume-idr', type=str, default='',
-                        help='path to checkpoint to resume training')
+    parser.add_argument("--use-pretrained",action="store_true",
+                        help="enable using pretrained model from github repo")
+    parser.add_argument('--resume', type=str, default="",
+                        help='path to checkpoint to resume parameters')
+    parser.add_argument('--resume-state', type=str, default='',
+                        help='path to checkpoint to resume optimizers')
     #gpu setting
     parser.add_argument('--num-gpus', type=int, default=0,
                         help='number of GPUs to use by default')
@@ -140,7 +142,7 @@ def set_seed(seed):
     torch.cuda.manual_seed_all(seed)
     return seed
 
-def load_model(net,
+def prepare_trainer(net,
                  optimizer_name,
                  wd,
                  momentum,
@@ -443,7 +445,7 @@ def main():
     main script
     """
     args = parse_args()
-    args.seed = set_seed(seed=args.seed, verbose=True)
+    args.seed = set_seed(seed=args.seed)
 
     _, log_file_exist = initialize_logging(
         logging_dir_path=args.save_dir,
@@ -456,10 +458,10 @@ def main():
         num_gpus=args.num_gpus,
         batch_size=args.batch_size)
     
-    net = load_model(
+    net = prepare_model(
         model_name=args.model,
         use_pretrained=args.use_pretrained,
-        pretrained_model_file_path=args.pretrained_model_file_path,
+        pretrained_model_file_path=args.resume.strip(),
         use_cuda=use_cuda)
     real_net = net.module if hasattr(net, "module") else net
     num_classes = real_net.num_classes
@@ -476,7 +478,7 @@ def main():
         batch_size=batch_size,
         num_workers=args.num_workers)
     
-    optimizer, lr_scheduler, start_epoch = load_model(
+    optimizer, lr_scheduler, start_epoch = prepare_trainer(
         net=net,
         optimizer_name=args.optimizer_name,
         momentum=args.momentum,
