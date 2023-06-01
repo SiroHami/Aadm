@@ -13,6 +13,7 @@ from torch.utils.data.sampler import WeightedRandomSampler
 from .CIFAR10_SL_cls import *
 from .CIFAR10_SSL_cls import *
 
+
 def get_dataset_info(dataset):
     """
     Get dataset info.
@@ -94,9 +95,9 @@ def get_val_data_info(dataset_info, batch_size, num_workers):
     DataLoader
         Val data Information.
     """
-    tranform_val = dataset_info.get_val_transform(dataset_info)
-    kwargs = dataset_info.get_val_loader_kwargs
-    dataset = dataset_info.dataset_class(root=dataset_info.root_dir, mode="val", transform=tranform_val, **kwargs)
+    tranform_val = dataset_info.val_transform(dataset_info)
+    kwargs = dataset_info.class_metric_extra_kwargs = None
+    dataset = dataset_info.dataset_class(root=dataset_info.root_dir, mode="val", transform=tranform_val)
     dataset_info.update_from_dataset(dataset)
     val_data_info = DataLoader(dataset=dataset,
                                 batch_size=batch_size,

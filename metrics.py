@@ -5,7 +5,7 @@
 
 """
 
-__all__ = ['EvalMetric', ]
+__all__ = ['EvalMetric','Top1Error', 'TopKError']
 
 
 from collections import OrderedDict
@@ -35,6 +35,30 @@ def get_metric(metric_name, metric_extra):
         return TopKError(**metric_extra)
     else:
         raise Exception("Wrong metric name: {}".format(metric_name))
+    
+def get_composite_metric(metric_names, metric_extra_kwargs):
+    """
+    Get composite metric by list of metric names.
+
+    Parameters:
+    ----------
+    metric_names : list of str
+        Metric name list.
+    metric_extra_kwargs : list of dict
+        Metric extra parameters list.
+
+    Returns:
+    -------
+    CompositeEvalMetric
+        Metric object instance.
+    """
+    if len(metric_names) == 1:
+        metric = get_metric(metric_names[0], metric_extra_kwargs[0])
+    else:
+        metric = CompositeEvalMetric()
+        for name, extra_kwargs in zip(metric_names, metric_extra_kwargs):
+            metric.add(get_metric(name, extra_kwargs))
+    return metric
 
 
 class EvalMetric(object):

@@ -24,22 +24,27 @@ class CIFAR10_SL_Info(DatasetInfo):
     def __init__(self):
         super(CIFAR10_SL_Info, self).__init__()
         self.label = "CIFAR10_SL"
-        self.num_labels = None
+        self.short_label = "cifar"
         self.root_dir = "CIFAR10_SL"
         self.dataset_class = CIFAR10Fine
+        self.num_labels = 50000
         self.num_train_samples = 50000
         self.in_channels = 3
         self.num_classes = 10
         self.input_image_size = (32, 32)
-        self.train_metric = ["Train.Error"]
-        self.train_metric_name = ["Top1Error"]
-        self.val_metric = ["Val.Error"]
-        self.val_metric_name = ["Top1Error"]
+        self.train_metric_capts = ["Train.Err"]
+        self.train_metric_names = ["Top1Error"]
+        self.train_metric_extra_kwargs = [{"name": "err"}]
+        self.val_metric_capts = ["Val.Err"]
+        self.val_metric_names = ["Top1Error"]
+        self.val_metric_extra_kwargs = [{"name": "err"}]
         self.saver_acc_ind = 0
         self.train_transform = cifar10_train_transform
         self.train_unlabel_transform = cifar10_train_transform
         self.val_transform = cifar10_val_transform
         self.test_transform = cifar10_val_transform
+        self.m1_type = "sirohami code by imgcls"
+        self.loss_name = "CrossEntropyLoss"
 
 
 def cifar10_train_transform(ds_metainfo,

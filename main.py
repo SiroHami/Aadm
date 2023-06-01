@@ -16,7 +16,7 @@ import torch.utils.data
 
 from datasets.dataset_utils import get_dataset_info, get_train_data_info, get_val_data_info
 from logger import initialize_logging
-from metrics import get_metric
+from metrics import get_composite_metric, get_metric
 from train_log_param_saver import TrainLogParamSaver
 from utils import prepare_model, prepare_pt_context, report_accuracy, validate
 
@@ -51,6 +51,10 @@ def add_train_cls_parser_arguments(parser):
                         help='training batch size per device (CPU/GPU)')
     parser.add_argument('--num-epochs', type=int, default=200,
                         help='number of training epochs')
+    parser.add_argument('--start-epoch', type=int, default=1,
+                        help='starting epoch')
+    parser.add_argument("--attempt", type=int, default=1,
+                        help="current attempt number for training")
     #optimizer setting
     parser.add_argument('--optimizer-name', type=str, default='sgd',
                         help='optimizer name')
@@ -58,10 +62,12 @@ def add_train_cls_parser_arguments(parser):
                         help='learning rate')
     parser.add_argument('--lr-decay', type=float, default=0.2,
                         help='decay rate of learning rate')
-    parser.add_argument('--lr-decay-epoch', type=int, default=0,
+    parser.add_argument('--lr-decay-epoch', type=str, default="40,60",
                         help='epoch at which learning rate decays')
-    parser.add_argument('--decay-epoch', type=str, default='30,60',
-                        help='epoch at which learning rate decays')
+    parser.add_argument('--lr-decay-period', type=int, default=0,
+                        help='period in epoch of learning rate decays')
+    parser.add_argument('--lr-mode', type=str, default='cosine',
+                        help='learning rate scheduler mode. options are step, poly and cosine')
     parser.add_argument('--target-lr', type=float, default=1e-8,
                         help='end learning rate')
     parser.add_argument('--momentum', type=float, default=0.9,
@@ -204,8 +210,8 @@ def prepare_trainer(net,
     cudnn.benchmark = True
 
     lr_mode = lr_mode.lower()
-    if lr_decay_epoch > 0:
-        lr_decay_epoch = list(range(lr_decay_epoch, num_epochs, lr_decay_period))
+    if lr_decay_period > 0:
+        lr_decay_epoch = list(range(lr_decay_period, num_epochs, lr_decay_period))
     else:
         lr_decay_epoch = [int(i) for i in lr_decay_epoch.split(',')]
     if (lr_mode == "step") and (lr_decay_period !=0):
@@ -227,16 +233,17 @@ def prepare_trainer(net,
             optimizer=optimizer,
             T_max=num_epochs,
             eta_min=lr_decay,
-            last_epoch=start_epoch-1)
+            last_epoch=(num_epochs-1))
     elif lr_mode == "poly":
         lr_scheduler = torch.optim.lr_scheduler.PolynomialLR(
             optimizer=optimizer,
             max_iter=num_epochs,
             power=lr_decay,
-            last_epoch=start_epoch-1)
+            last_epoch=num_epochs-1)
     else:
         raise ValueError("Unsupported lr mode: {}".format(lr_mode))
-    
+    return optimizer, lr_scheduler, start_epoch
+
 def calculation_net_weight(net):
     """
     Calculation network weight
@@ -344,6 +351,7 @@ def train_net(batch_size,
               lr_scheduler,
               lp_saver,
               log_interval,
+              num_classes,
               train_metric,
               val_metric,
               use_cuda):
@@ -379,6 +387,8 @@ def train_net(batch_size,
     use_cuda : bool
         whether to use CUDA
     """
+    assert (num_classes > 0)
+
     criterion = nn.CrossEntropyLoss()
     if use_cuda:
         criterion = criterion.cuda()
@@ -492,7 +502,7 @@ def main():
         file_path=args.resume_state)
     
     if args.save_dir and args.save_interval:
-        param_names = dataset_info.val_metric + dataset_info.train_metric + ["train_loss", "lr"]
+        param_names = dataset_info.val_metric_capts + dataset_info.train_metric_capts + ["train_loss", "lr"]
         lp_saver = TrainLogParamSaver(
             checkpoint_file_name_prefix="{}_{}".format(dataset_info.short_label, args.model),
             last_checkpoint_file_name_suffix="last",
@@ -527,8 +537,8 @@ def main():
         train_data=train_data,
         val_data=val_data,
         num_classes=num_classes,
-        train_metric=get_metric(dataset_info.train_metric, dataset_info.train_metric_extra),
-        val_metric=get_metric(dataset_info.val_metric, dataset_info.val_metric_extra),
+        train_metric=get_composite_metric(dataset_info.train_metric_names, dataset_info.train_metric_extra_kwargs),
+        val_metric=get_composite_metric(dataset_info.val_metric_names, dataset_info.val_metric_extra_kwargs),
         use_cuda=use_cuda)
     
 if __name__ == "__main__":
